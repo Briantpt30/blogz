@@ -13,7 +13,7 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(500))
-    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    owner_id = db.Column(db.String(500), db.ForeignKey('user.username'))
 
     def __init__(self, title, body, owner):
         self.title = title
@@ -35,7 +35,7 @@ class User(db.Model):
 @app.before_request
 def require_login():
     allowed_routes = ['login', 'signup', 'blog','index']
-    if request.endpoint not in allowed_routes and 'username' not in session:
+    if request.endpoint not in allowed_routes and 'user' not in session:
         return redirect('/login')
 
 
@@ -48,19 +48,21 @@ def index():
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
     blog_id = request.args.get('id')
-    owner = User.query.filter_by(username=session['username']).first()
-    users = User.query.all()
-    print('##########')
-    print(blog_id)
-    print(owner)
+    user_id = request.args.get('user')
 
     if blog_id is not None:
         blogs = Blog.query.filter_by(id=blog_id)
-        return render_template('blogpost.html', blogs=blogs, users=users)
+        return render_template('blogpost.html', blogs=blogs)
+
+    elif user_id is not None:
+        blogs = Blog.query.filter_by(owner_id=user_id)
+        return render_template('singleuser.html',blogs=blogs)
+
+
     else:
         blogs = Blog.query.all()
         blogs = blogs[::-1]
-        return render_template('blog.html',blogs=blogs, owner=owner)
+        return render_template('blog.html',blogs=blogs,)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -70,7 +72,7 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
-            session['username'] = username
+            session['user'] = username
             flash("Logged in")
             return redirect('/newpost')
         else:
@@ -101,7 +103,7 @@ def signup():
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
-            session['username'] = username
+            session['user'] = username
             return redirect('/newpost')
         else:
             return flash("A user with that username already exists")    
@@ -111,7 +113,7 @@ def signup():
 
 @app.route('/logout')
 def logout():
-    del session['username']
+    session.pop('user', None)
     return redirect('/blog')
 
 
@@ -153,7 +155,7 @@ def newpost_error():
     blog_body = request.form['blog']
     blog_title = request.form['title']
     spider_man = True
-    owner = User.query.filter_by(username=session['username']).first()
+    owner = User.query.filter_by(username=session['user']).first()
     if empty_entry(blog_body) == False:
         body_error = 'Please fill in body'
         spider_man = False

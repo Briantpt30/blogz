@@ -3,6 +3,6 @@
 {% for blog in blogs%}
     <h2>{{blog.title}}</h2>
     <p>{{blog.body}}</p>
-    <p>Written by<a href="/blog?user={{username}}">{{username}}</a></p>
+    <p>Written by <a href="/blog?user={{blog.owner_id}}">{{blog.owner_id}}</a></p>
     {% endfor %}
 {% endblock %}
