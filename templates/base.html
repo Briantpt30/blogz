@@ -6,11 +6,14 @@
     </head>
 <body>
     <nav>
-        <a href="/">Home</a>
-        <a href="/blog">All Posts</a>
-        <a href="/newpost">Newpost</a>
-        <a href="/login">Login</a>
-        <a href="logout">Logout</a>
+        
+            <a href="/">Home</a>
+            <a href="/blog">All Posts</a>
+            <a href="/newpost">Newpost</a>
+        
+            <a id="user" href="/login">Login</a>
+            <a id="user" href="logout">Logout</a>
+            
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
