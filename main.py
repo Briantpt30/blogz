@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from hashutils import make_pw_hash, check_pw_hash
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -24,12 +25,12 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(120))
+    pw_hash = db.Column(db.String(120))
     blogs = db.relationship('Blog', backref='owner')
 
     def __init__(self, username, password):
         self.username = username
-        self.password = password
+        self.pw_hash = make_pw_hash(password)
 
 
 @app.before_request
@@ -45,24 +46,25 @@ def index():
     return render_template('index.html', users=users)
 
 
+@app.route('/blog/user/<string:user_id>')
+def user_blog(user_id):
+    blogs = Blog.query.filter_by(owner_id=user_id)
+    return render_template('singleuser.html',blogs=blogs)
+
+
+
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
     blog_id = request.args.get('id')
-    user_id = request.args.get('user')
+    page_num = int(request.args.get('page'))
 
     if blog_id is not None:
         blogs = Blog.query.filter_by(id=blog_id)
         return render_template('blogpost.html', blogs=blogs)
 
-    elif user_id is not None:
-        blogs = Blog.query.filter_by(owner_id=user_id)
-        return render_template('singleuser.html',blogs=blogs)
-
-
     else:
-        blogs = Blog.query.all()
-        blogs = blogs[::-1]
-        return render_template('blog.html',blogs=blogs,)
+        blogs = Blog.query.paginate(page_num, 5, True)
+        return render_template('blog.html',blogs=blogs)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -71,7 +73,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        if user and check_pw_hash(password, user.pw_hash):
             session['user'] = username
             flash("Logged in")
             return redirect('/newpost')

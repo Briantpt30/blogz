@@ -3,17 +3,25 @@
 {% block content %}
     <h1>Build a Blog</h1>
 
-    {% if blogs|length == 0 %}
-    <p>No Blogs yet</p>
+    {% if blogs.total == 0 %}
+        <p>No Blogs yet</p>
     {% else %}
 
-            {% for blog in blogs %}
+            {% for blog in blogs.items %}
             <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
             <p>{{blog.body}}</p>
-            <p>Written by <a href="/blog?user={{blog.owner_id}}">{{blog.owner_id}}</a></p>
+            <p>Written by <a href="/blog?id={{blog.owner_id}}">{{blog.owner_id}}</a></p>
             <hr />
             {% endfor %}
 
+            {% for page in blogs.iter_pages() %}
+
+            {% if page %}
+                <a href="/blog?page={{page}}">{{page}}</a>
+            {% else %}
+                 ...
+            {% endif %} 
+            {% endfor %}    
 
     {% endif %}
 
