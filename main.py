@@ -35,7 +35,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', 'blog','index','static']
+    allowed_routes = ['all_blogs', 'login', 'signup', 'blog','index','static']
     if request.endpoint not in allowed_routes and 'user' not in session:
         return redirect('/login')
 
@@ -46,25 +46,30 @@ def index():
     return render_template('index.html', users=users)
 
 
-@app.route('/blog/user/<string:user_id>')
-def user_blog(user_id):
-    blogs = Blog.query.filter_by(owner_id=user_id)
-    return render_template('singleuser.html',blogs=blogs)
+
+@app.route('/all')
+def all_blogs():
+    print('##################')
+    blogs = Blog.query.paginate(None, 5, True)    
+    return render_template('blog.html',blogs=blogs)
+
 
 
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
     blog_id = request.args.get('id')
-    page_num = int(request.args.get('page'))
+    user_id = request.args.get('user')
 
     if blog_id is not None:
         blogs = Blog.query.filter_by(id=blog_id)
         return render_template('blogpost.html', blogs=blogs)
 
-    else:
-        blogs = Blog.query.paginate(page_num, 5, True)
-        return render_template('blog.html',blogs=blogs)
+    elif user_id is not None:
+        blogs = Blog.query.filter_by(owner_id=user_id)
+        return render_template('singleuser.html',blogs=blogs)
+
+    
 
 
 @app.route('/login', methods=['POST', 'GET'])
