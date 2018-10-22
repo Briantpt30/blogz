@@ -49,8 +49,7 @@ def index():
 
 @app.route('/all')
 def all_blogs():
-    print('##################')
-    blogs = Blog.query.paginate(None, 5, True)    
+    blogs = Blog.query.paginate(None, 5, True) 
     return render_template('blog.html',blogs=blogs)
 
 
