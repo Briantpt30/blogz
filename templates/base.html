@@ -2,19 +2,32 @@
 <html>
     <head>
         <title>{{title}}</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='styles/style.css')}}"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/style.css')}}"/>
+
     </head>
 <body>
-    <nav>
-        
+<nav>
+    <ul>
+        <li>
             <a href="/">Home</a>
+        </li>
+        <li>
             <a href="/all">All Posts</a>
+        </li>
+        <li>
             <a href="/newpost">Newpost</a>
-        
+        </li>
+    </ul>
+    <ul id="user-account">
+        <li>
             <a id="user" href="/login">Login</a>
+        </li>
+        <li>
             <a id="user" href="logout">Logout</a>
+        </li>
+    </ul>
             
-    </nav>
+</nav>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
         <ul>

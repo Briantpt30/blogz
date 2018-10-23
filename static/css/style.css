@@ -1,0 +1,30 @@
+.error{
+    color: red;
+}
+h1{
+    text-align: center;
+}
+
+nav ul{
+    padding: 0;
+    display: inline-block;
+}
+nav ul li{
+    list-style: none;
+    display: inline-block;
+    margin-right: 15px;
+}
+body{
+    font-family: sans-serif;
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+
+
+
+
+#user-account{
+    float: right
+}
