@@ -8,16 +8,18 @@
     {% else %}
 
             {% for blog in blogs.items %}
-            <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
+            <h2><a class="text-danger" href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
             <p>{{blog.body}}</p>
-            <p>Written by <a href="/blog?user={{blog.owner_id}}">{{blog.owner_id}}</a></p>
+            <p>Written by <a class="text-danger" href="/blog?user={{blog.owner_id}}">{{blog.owner_id}}</a></p>
             <hr />
             {% endfor %}
 
             {% for page in blogs.iter_pages() %}
 
             {% if page %}
-                <a href="/all?page={{page}}">{{page}}</a>
+            <ul class="pagination">
+                <li><a href="/all?page={{page}}">{{page}}</a></li>
+            </ul>    
             {% else %}
                  ...
             {% endif %} 

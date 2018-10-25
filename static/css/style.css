@@ -1,4 +1,4 @@
-.error{
+#error{
     color: red;
 }
 h1{
@@ -19,12 +19,15 @@ body{
     width: 800px;
     margin: 0 auto;
     padding: 10px;
+    
 }
-
-
-
-
+.user-list{
+    list-style: none;
+}
 
 #user-account{
     float: right
+}
+table{
+    color: black;
 }

@@ -2,28 +2,29 @@
 <html>
     <head>
         <title>{{title}}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/style.css')}}"/>
 
     </head>
-<body>
+<body class="bg-primary">
 <nav>
     <ul>
         <li>
-            <a href="/">Home</a>
+            <a href="/" class="btn btn-danger" role="button">Home</a>
         </li>
         <li>
-            <a href="/all">All Posts</a>
+            <a href="/all" class="btn btn-info" role="button">All Posts</a>
         </li>
         <li>
-            <a href="/newpost">Newpost</a>
+            <a href="/newpost" class="btn btn-warning" role="button">Newpost</a>
         </li>
     </ul>
     <ul id="user-account">
         <li>
-            <a id="user" href="/login">Login</a>
+            <a id="user" href="/login" class="btn btn-success" role="button">Login</a>
         </li>
         <li>
-            <a id="user" href="logout">Logout</a>
+            <a id="user" href="logout" class="btn btn-danger" role="button">Logout</a>
         </li>
     </ul>
             

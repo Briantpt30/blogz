@@ -154,6 +154,8 @@ def empty_entry(entry):
         return True
 
 
+
+
 @app.route('/newpost', methods=['POST'])
 def newpost_error():
     body_error = ''
