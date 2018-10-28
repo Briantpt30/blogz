@@ -120,7 +120,7 @@ def signup():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return redirect('/blog')
+    return redirect('/all')
 
 
 def valid_text_length(text):
