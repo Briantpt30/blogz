@@ -17,9 +17,11 @@
             {% for page in blogs.iter_pages() %}
 
             {% if page %}
-            <ul class="pagination">
-                <li><a href="/all?page={{page}}">{{page}}</a></li>
-            </ul>    
+            <div>
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="/all?page={{page}}">{{page}}</a></li>
+                </ul> 
+            </div>       
             {% else %}
                  ...
             {% endif %} 
