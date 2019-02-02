@@ -180,7 +180,7 @@ def newpost_error():
         new_blog = Blog(blog_title, blog_body, owner)
         db.session.add(new_blog)
         db.session.commit()
-        return redirect(f'/blog?id={new_blog.id}&user={owner.username}')
+        return redirect('/blog?id={0}&user={1}'.format(new_blog.id,owner.username))
 
 
 
